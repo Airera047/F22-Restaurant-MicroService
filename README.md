@@ -1,4 +1,4 @@
-# F22-Starter-Microservice
+# F22-Restaurant-MicroService
 
 ## Introduction
 
