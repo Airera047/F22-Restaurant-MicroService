@@ -41,6 +41,21 @@ def get_restaurant_by_id(rid):
     return rsp
 
 
+@app.route("/api/restaurants/top5/<cuisine>", methods=["GET"])
+def get_restaurant_by_id(cuisine):
+
+    result = RestaurantResource.get_restaurant_top5(cuisine)
+
+    if result:
+        rsp = Response(json.dumps(result), status=200,
+                       content_type="application.json")
+    else:
+        rsp = Response("NOT FOUND", status=404, content_type="text/plain")
+
+    return rsp
+
+
+
 @app.route("/api/restaurants/query/<query>/<offset>/<limit>", methods=["GET"])
 def get_restaurants_by_query(query, offset, limit):
 
@@ -56,11 +71,11 @@ def get_restaurants_by_query(query, offset, limit):
     return rsp
 
 
-@app.route("/api/restaurants/create/<rid>/<name>/<address>/<email>/<phone>/<category>", methods=["POST"])
-def create_restaurants_by_rid(rid, name, address, email, phone, category):
+@app.route("/api/restaurants/create/<rid>/<cuisine>/<name>/<rating>/<address>/<zip_code>/<phone>/<url>", methods=["POST"])
+def create_restaurants_by_rid(rid, cuisine, name, rating, address, zip_code, phone, url):
 
     result = RestaurantResource.create_restaurant_by_key(
-        rid, name, address, email, phone, category)
+        rid, cuisine, name, rating, address, zip_code, phone, url)
 
     if result:
         rsp = Response(json.dumps(result), status=200,
@@ -71,11 +86,11 @@ def create_restaurants_by_rid(rid, name, address, email, phone, category):
     return rsp
 
 
-@app.route("/api/restaurants/update/<rid>/<name>/<address>/<email>/<phone>/<category>", methods=["POST"])
-def update_restaurants_by_rid(rid, name, address, email, phone, category):
+@app.route("/api/restaurants/update/<rid>/<cuisine>/<name>/<rating>/<address>/<zip_code>/<phone>/<url>", methods=["POST"])
+def update_restaurants_by_rid(rid, cuisine, name, rating, address, zip_code, phone, url):
 
     result = RestaurantResource.update_restaurant_by_key(
-        rid, name, address, email, phone, category)
+        rid, cuisine, name, rating, address, zip_code, phone, url)
 
     if result:
         rsp = Response(json.dumps(result), status=200,

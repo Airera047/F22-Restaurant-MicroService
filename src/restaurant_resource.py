@@ -35,17 +35,28 @@ class RestaurantResource:
         return result
 
     @staticmethod
+    def get_restaurant_top5(cuisine):
+
+        sql = "SELECT * FROM f22_databases.restaurants where cuisine=%s ORDER BY rating DESC LIMIT 5"
+        conn = RestaurantResource._get_connection()
+        cur = conn.cursor()
+        res = cur.execute(sql, args=cuisine)
+        result = cur.fetchone()
+
+        return result
+
+    @staticmethod
     def get_restaurant_by_query(query, offset, limit):
         '''
             SELECT * FROM f22_databases.restaurants
-            WHERE LOWER( name ) LIKE %s
+            WHERE LOWER( cuisine ) LIKE %s
+            OR LOWER( name ) LIKE %s
             OR LOWER( address ) LIKE %s
-            OR LOWER( email ) LIKE %s
+            OR LOWER( zip_code ) LIKE %s
             OR LOWER( phone ) LIKE %s
-            OR LOWER( category ) LIKE %s
         '''
         q = '%'+query+'%'
-        sql = "SELECT * FROM f22_databases.restaurants WHERE LOWER( name ) LIKE %s OR LOWER( address ) LIKE %s OR LOWER( email ) LIKE %s OR LOWER( phone ) LIKE %s OR LOWER( category ) LIKE %s"
+        sql = "SELECT * FROM f22_databases.restaurants WHERE LOWER( name ) LIKE %s OR LOWER( address ) LIKE %s OR LOWER( cuisine ) LIKE %s OR LOWER( phone ) LIKE %s OR LOWER( zip_code ) LIKE %s"
         conn = RestaurantResource._get_connection()
         cur = conn.cursor()
         res = cur.execute(sql, args=(q,q,q,q,q))
@@ -61,20 +72,20 @@ class RestaurantResource:
         return ret
 
     @staticmethod
-    def create_restaurant_by_key(rid, name, address, email, phone, category):
+    def create_restaurant_by_key(rid, cuisine, name, rating, address, zip_code, phone, url):
         
         conn = RestaurantResource._get_connection()
         cur = conn.cursor()
 
-        sql = "INSERT INTO f22_databases.restaurants VALUES (%s, %s, %s, %s, %s, %s)"
-        res = cur.execute(sql, args = (rid, name, address, email, phone, category))
+        sql = "INSERT INTO f22_databases.restaurants VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"   
+        res = cur.execute(sql, args = (rid, cuisine, name, rating, address, zip_code, phone, url))
         if res > 0:
             return "success"
         else:
             return "fail"    
 
     @staticmethod
-    def update_restaurant_by_key(rid, name, address, email, phone, category):
+    def update_restaurant_by_key(rid, cuisine, name, rating, address, zip_code, phone, url):
         conn = RestaurantResource._get_connection()
         cur = conn.cursor()
 
@@ -84,8 +95,8 @@ class RestaurantResource:
         if len(result) <= 0:
             return "restaurant doesn't exist"
         
-        sql = "UPDATE f22_databases.restaurants SET name=%s, address=%s, email=%s, phone=%s, category=%s WHERE rid=%s"
-        val = (name, address, email, phone, category, rid)
+        sql = "UPDATE f22_databases.restaurants SET cuisine=%s, name=%s, rating=%s, address=%s, zip_code=%s, phone=%s, url=%s WHERE rid=%s"
+        val = (cuisine, name, rating, address, zip_code, phone, url)
         cur.execute(sql, val)
 
         if cur.rowcount > 0:
