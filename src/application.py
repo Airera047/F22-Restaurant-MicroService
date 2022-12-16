@@ -42,7 +42,7 @@ def get_restaurant_by_id(rid):
 
 
 @app.route("/api/restaurants/top5/<cuisine>", methods=["GET"])
-def get_restaurant_by_id(cuisine):
+def get_restaurant_top5(cuisine):
 
     result = RestaurantResource.get_restaurant_top5(cuisine)
 
@@ -54,6 +54,19 @@ def get_restaurant_by_id(cuisine):
 
     return rsp
 
+
+@app.route("/api/restaurants/all", methods=["GET"])
+def get_all_restaurants():
+
+    result = RestaurantResource.get_all_restaurants()
+
+    if result:
+        rsp = Response(json.dumps(result), status=200,
+                       content_type="application.json")
+    else:
+        rsp = Response("NOT FOUND", status=404, content_type="text/plain")
+
+    return rsp
 
 
 @app.route("/api/restaurants/query/<query>/<offset>/<limit>", methods=["GET"])

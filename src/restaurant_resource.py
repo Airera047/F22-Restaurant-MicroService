@@ -46,6 +46,17 @@ class RestaurantResource:
         return result
 
     @staticmethod
+    def get_all_restaurants():
+
+        sql = "SELECT * FROM f22_databases.restaurants"
+        conn = RestaurantResource._get_connection()
+        cur = conn.cursor()
+        res = cur.execute(sql)
+        result = cur.fetchone()
+
+        return result
+
+    @staticmethod
     def get_restaurant_by_query(query, offset, limit):
         '''
             SELECT * FROM f22_databases.restaurants
