@@ -99,8 +99,8 @@ def create_restaurants_by_rid(rid, cuisine, name, rating, address, zip_code, pho
     return rsp
 
 
-@app.route("/api/restaurants/update/<rid>/<cuisine>/<name>/<rating>/<address>/<zip_code>/<phone>/<url>", methods=["POST"])
-def update_restaurants_by_rid(rid, cuisine, name, rating, address, zip_code, phone, url):
+@app.route("/api/restaurants/update/<rid>/<cuisine>/<name>/<rating>/<address>/<phone>", methods=["POST"])
+def update_restaurants_by_rid(rid, cuisine, name, rating, address, phone):
 
     result = RestaurantResource.update_restaurant_by_key(
         rid, cuisine, name, rating, address, zip_code, phone, url)

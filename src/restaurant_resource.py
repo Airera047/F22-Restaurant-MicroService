@@ -96,7 +96,7 @@ class RestaurantResource:
             return "fail"    
 
     @staticmethod
-    def update_restaurant_by_key(rid, cuisine, name, rating, address, zip_code, phone, url):
+    def update_restaurant_by_key(rid, cuisine, name, rating, address, phone):
         conn = RestaurantResource._get_connection()
         cur = conn.cursor()
 
@@ -106,8 +106,8 @@ class RestaurantResource:
         if len(result) <= 0:
             return "restaurant doesn't exist"
         
-        sql = "UPDATE f22_databases.restaurants SET cuisine=%s, name=%s, rating=%s, address=%s, zip_code=%s, phone=%s, url=%s WHERE rid=%s"
-        val = (cuisine, name, rating, address, zip_code, phone, url)
+        sql = "UPDATE f22_databases.restaurants SET cuisine=%s, name=%s, rating=%s, address=%s, phone=%s WHERE rid=%s"
+        val = (cuisine, name, rating, address, phone)
         cur.execute(sql, val)
 
         if cur.rowcount > 0:
