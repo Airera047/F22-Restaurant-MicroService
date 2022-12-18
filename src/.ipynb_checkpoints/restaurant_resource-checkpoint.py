@@ -13,7 +13,7 @@ class RestaurantResource:
         user = os.environ.get("DBUSER")
         pw = os.environ.get("DBPW")
         h = os.environ.get("DBHOST")
-        print(h)
+
         conn = pymysql.connect(
             user=user,
             password=pw,
@@ -41,35 +41,20 @@ class RestaurantResource:
         conn = RestaurantResource._get_connection()
         cur = conn.cursor()
         res = cur.execute(sql, args=cuisine)
-        result = cur.fetchall()
+        result = cur.fetchone()
 
-        ret = result[0:len(result)]
- 
-        return ret
+        return result
 
     @staticmethod
-    def get_all_restaurants(offset=0, limit=10):
+    def get_all_restaurants():
 
         sql = "SELECT * FROM f22_databases.restaurants"
         conn = RestaurantResource._get_connection()
         cur = conn.cursor()
         res = cur.execute(sql)
-        result = cur.fetchall()
-        offset = int(offset)
-        limit = int(limit)
+        result = cur.fetchone()
 
-        ret = result[0:len(result)]
-        start = offset*limit
-        end = start+limit
-
-        if len(result) > start:
-            ret = result[start:end]
-
-        output = {
-            "count": len(result),
-            "restaurants": ret
-        }
-        return output
+        return result
 
     @staticmethod
     def get_restaurant_by_query(query, offset, limit):
@@ -87,23 +72,15 @@ class RestaurantResource:
         cur = conn.cursor()
         res = cur.execute(sql, args=(q,q,q,q,q))
         result = cur.fetchall()
-        offset = int(offset)
-        limit = int(limit)
 
         ret = result[0:len(result)]
-        start = offset*limit
-        end = start+limit
+        if len(result) > offset:
+            ret = ret[offset:len(ret)]
 
-        if len(result) > start:
-            ret = result[start:end]
-            
-        output = {
-            "count": len(result),
-            "offset": offset,
-            "limit": limit,
-            "restaurants": ret
-        }
-        return output
+        if len(ret) > limit:
+            ret = ret[0:limit]
+
+        return ret
 
     @staticmethod
     def create_restaurant_by_key(rid, cuisine, name, rating, address, zip_code, phone, url):
@@ -119,7 +96,7 @@ class RestaurantResource:
             return "fail"    
 
     @staticmethod
-    def update_restaurant_by_key(rid, cuisine, name, rating, address, phone):
+    def update_restaurant_by_key(rid, cuisine, name, rating, address, zip_code, phone, url):
         conn = RestaurantResource._get_connection()
         cur = conn.cursor()
 
@@ -129,8 +106,8 @@ class RestaurantResource:
         if len(result) <= 0:
             return "restaurant doesn't exist"
         
-        sql = "UPDATE f22_databases.restaurants SET cuisine=%s, name=%s, rating=%s, address=%s, phone=%s WHERE rid=%s"
-        val = (cuisine, name, rating, address, phone, rid)
+        sql = "UPDATE f22_databases.restaurants SET cuisine=%s, name=%s, rating=%s, address=%s, zip_code=%s, phone=%s, url=%s WHERE rid=%s"
+        val = (cuisine, name, rating, address, zip_code, phone, url)
         cur.execute(sql, val)
 
         if cur.rowcount > 0:
