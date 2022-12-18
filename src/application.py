@@ -103,7 +103,7 @@ def create_restaurants_by_rid(rid, cuisine, name, rating, address, zip_code, pho
 def update_restaurants_by_rid(rid, cuisine, name, rating, address, phone):
 
     result = RestaurantResource.update_restaurant_by_key(
-        rid, cuisine, name, rating, address, zip_code, phone, url)
+        rid, cuisine, name, rating, address, phone)
 
     if result:
         rsp = Response(json.dumps(result), status=200,
