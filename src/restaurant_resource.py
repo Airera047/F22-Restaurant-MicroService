@@ -107,7 +107,7 @@ class RestaurantResource:
             return "restaurant doesn't exist"
         
         sql = "UPDATE f22_databases.restaurants SET cuisine=%s, name=%s, rating=%s, address=%s, phone=%s WHERE rid=%s"
-        val = (cuisine, name, rating, address, phone)
+        val = (cuisine, name, rating, address, phone, rid)
         cur.execute(sql, val)
 
         if cur.rowcount > 0:
