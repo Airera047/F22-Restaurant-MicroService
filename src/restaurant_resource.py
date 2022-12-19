@@ -97,6 +97,8 @@ class RestaurantResource:
             
         output = {
             "count": len(result),
+            "offset": offset,
+            "limit": limit,
             "restaurants": ret
         }
         return output
