@@ -41,7 +41,7 @@ class RestaurantResource:
         conn = RestaurantResource._get_connection()
         cur = conn.cursor()
         res = cur.execute(sql, args=cuisine)
-        result = cur.fetchone()
+        result = cur.fetchall()
 
         return result
 
@@ -52,17 +52,21 @@ class RestaurantResource:
         conn = RestaurantResource._get_connection()
         cur = conn.cursor()
         res = cur.execute(sql)
-        result = cur.fetchone()
+        result = cur.fetchall()
         offset = int(offset)
         limit = int(limit)
+
         ret = result[0:len(result)]
         start = offset*limit
         end = start+limit
 
         if len(result) > start:
             ret = result[start:end]
-
-        return ret
+        output = {
+            "count": len(result),
+            "restaurants": ret
+        }
+        return output
 
     @staticmethod
     def get_restaurant_by_query(query, offset, limit):
