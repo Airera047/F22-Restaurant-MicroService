@@ -55,10 +55,10 @@ def get_restaurant_top5(cuisine):
     return rsp
 
 
-@app.route("/api/restaurants/all", methods=["GET"])
-def get_all_restaurants():
+@app.route("/api/restaurants/all/<offset>/<limit>", methods=["GET"])
+def get_all_restaurants(offset, limit):
 
-    result = RestaurantResource.get_all_restaurants()
+    result = RestaurantResource.get_all_restaurants(offset, limit)
 
     if result:
         rsp = Response(json.dumps(result), status=200,
