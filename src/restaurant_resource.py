@@ -62,6 +62,7 @@ class RestaurantResource:
 
         if len(result) > start:
             ret = result[start:end]
+
         output = {
             "count": len(result),
             "restaurants": ret
@@ -84,15 +85,21 @@ class RestaurantResource:
         cur = conn.cursor()
         res = cur.execute(sql, args=(q,q,q,q,q))
         result = cur.fetchall()
+        offset = int(offset)
+        limit = int(limit)
 
         ret = result[0:len(result)]
-        if len(result) > offset:
-            ret = ret[offset:len(ret)]
+        start = offset*limit
+        end = start+limit
 
-        if len(ret) > limit:
-            ret = ret[0:limit]
-
-        return ret
+        if len(result) > start:
+            ret = result[start:end]
+            
+        output = {
+            "count": len(result),
+            "restaurants": ret
+        }
+        return output
 
     @staticmethod
     def create_restaurant_by_key(rid, cuisine, name, rating, address, zip_code, phone, url):
