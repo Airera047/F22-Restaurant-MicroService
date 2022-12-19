@@ -53,7 +53,8 @@ class RestaurantResource:
         cur = conn.cursor()
         res = cur.execute(sql)
         result = cur.fetchone()
-
+        offset = int(offset)
+        limit = int(limit)
         ret = result[0:len(result)]
         start = offset*limit
         end = start+limit
