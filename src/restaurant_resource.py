@@ -2,6 +2,7 @@ from unittest import result
 import pymysql
 import os
 
+
 class RestaurantResource:
 
     def __int__(self):
@@ -44,7 +45,7 @@ class RestaurantResource:
         result = cur.fetchall()
 
         ret = result[0:len(result)]
- 
+
         return ret
 
     @staticmethod
@@ -67,6 +68,8 @@ class RestaurantResource:
 
         output = {
             "count": len(result),
+            "offset": offset,
+            "limit": limit,
             "restaurants": ret
         }
         return output
@@ -85,7 +88,7 @@ class RestaurantResource:
         sql = "SELECT * FROM f22_databases.restaurants WHERE LOWER( name ) LIKE %s OR LOWER( address ) LIKE %s OR LOWER( cuisine ) LIKE %s OR LOWER( phone ) LIKE %s OR LOWER( zip_code ) LIKE %s"
         conn = RestaurantResource._get_connection()
         cur = conn.cursor()
-        res = cur.execute(sql, args=(q,q,q,q,q))
+        res = cur.execute(sql, args=(q, q, q, q, q))
         result = cur.fetchall()
         offset = int(offset)
         limit = int(limit)
@@ -96,7 +99,7 @@ class RestaurantResource:
 
         if len(result) > start:
             ret = result[start:end]
-            
+
         output = {
             "count": len(result),
             "offset": offset,
@@ -107,16 +110,17 @@ class RestaurantResource:
 
     @staticmethod
     def create_restaurant_by_key(rid, cuisine, name, rating, address, zip_code, phone, url):
-        
+
         conn = RestaurantResource._get_connection()
         cur = conn.cursor()
 
-        sql = "INSERT INTO f22_databases.restaurants VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"   
-        res = cur.execute(sql, args = (rid, cuisine, name, rating, address, zip_code, phone, url))
+        sql = "INSERT INTO f22_databases.restaurants VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+        res = cur.execute(sql, args=(rid, cuisine, name,
+                                     rating, address, zip_code, phone, url))
         if res > 0:
             return "success"
         else:
-            return "fail"    
+            return "fail"
 
     @staticmethod
     def update_restaurant_by_key(rid, cuisine, name, rating, address, phone):
@@ -128,35 +132,32 @@ class RestaurantResource:
         result = cur.fetchall()
         if len(result) <= 0:
             return "restaurant doesn't exist"
-        
+
         sql = "UPDATE f22_databases.restaurants SET cuisine=%s, name=%s, rating=%s, address=%s, phone=%s WHERE rid=%s"
         val = (cuisine, name, rating, address, phone, rid)
         cur.execute(sql, val)
 
         if cur.rowcount > 0:
-                return "success"
+            return "success"
         else:
             return "fail"
-    
+
     @staticmethod
     def delete_restaurant_by_key(rid):
         conn = RestaurantResource._get_connection()
         cur = conn.cursor()
-    
+
         sql = "SELECT rid FROM f22_databases.restaurants where rid=%s"
         res = cur.execute(sql, args=(rid))
         result = cur.fetchall()
         if len(result) <= 0:
             return "restaurant doesn't exist"
-        
+
         sql = "DELETE FROM f22_databases.restaurants WHERE rid = %s"
         val = (rid)
         cur.execute(sql, val)
-        
+
         if cur.rowcount > 0:
-                return "success"
+            return "success"
         else:
             return "fail"
-    
-
-    
