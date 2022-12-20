@@ -64,7 +64,7 @@ class RestaurantResource:
         end = start+limit
 
         if len(result) > start:
-            ret = result[start:end]
+            ret = result[start:max(end, len(result))]
 
         output = {
             "count": len(result),
@@ -98,7 +98,7 @@ class RestaurantResource:
         end = start+limit
 
         if len(result) > start:
-            ret = result[start:end]
+            ret = result[start:max(end, len(result))]
 
         output = {
             "count": len(result),
