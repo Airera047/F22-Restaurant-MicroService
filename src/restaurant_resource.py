@@ -63,9 +63,10 @@ class RestaurantResource:
         start = offset*limit
         end = start+limit
 
-        if len(result) > start:
+        if len(result) >= start:
             ret = result[start:max(end, len(result))]
-
+        else:
+            ret = []
         output = {
             "count": len(result),
             "offset": offset,
@@ -97,8 +98,10 @@ class RestaurantResource:
         start = offset*limit
         end = start+limit
 
-        if len(result) > start:
+        if len(result) >= start:
             ret = result[start:max(end, len(result))]
+        else:
+            ret = []
 
         output = {
             "count": len(result),
