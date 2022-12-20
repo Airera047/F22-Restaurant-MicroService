@@ -71,7 +71,7 @@ def get_all_restaurants(offset, limit):
     return rsp
 
 
-@app.route("/api/restaurants/query", methods=["GET"])
+@app.route("/api/restaurants/query/query", methods=["GET"])
 def get_restaurants_by_query():
 
     query = request.args.get('query')
