@@ -71,11 +71,21 @@ def get_all_restaurants(offset, limit):
     return rsp
 
 
-@app.route("/api/restaurants/query/<query>/<offset>/<limit>", methods=["GET"])
-def get_restaurants_by_query(query, offset, limit):
+@app.route("/api/restaurants/query", methods=["GET"])
+def get_restaurants_by_query():
 
-    result = RestaurantResource.get_restaurant_by_query(
-        query, int(offset), int(limit))
+    query = request.args.get('query')
+    offset = request.args.get('offset')
+    limit = request.args.get('limit')
+    if not offset:
+        offset = 0
+    if not limit:
+        limit = 10
+    if not query:
+        result = result = RestaurantResource.get_all_restaurants(offset, limit)
+    else:
+        result = RestaurantResource.get_restaurant_by_query(
+            query, int(offset), int(limit))
 
     if result:
         rsp = Response(json.dumps(result), status=200,
