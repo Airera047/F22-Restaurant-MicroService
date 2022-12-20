@@ -161,7 +161,7 @@ def get_review_by_user_id(uid):
 @app.route("/api/reviews/rid/<rid>", methods=["GET"])
 def get_review_by_restaurant_id(rid):
 
-    result = ReviewResource.get_review_by_user_id(rid)
+    result = ReviewResource.get_review_by_restaurant_id(rid)
 
     if result:
         rsp = Response(json.dumps(result), status=200,
