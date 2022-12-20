@@ -4,6 +4,8 @@ import json
 from restaurant_resource import RestaurantResource
 from review_resource import ReviewResource
 from flask_cors import CORS
+import math
+import random
 
 # Create the Flask application object.
 app = Flask(__name__)
@@ -170,6 +172,22 @@ def get_review_by_restaurant_id(rid):
     return rsp
 
 
+@app.route("/api/reviews/create/<rid>/<uid>/<rating>/<content>", methods=["POST"])
+def create_review(rid, uid, rating, content):
+    timestamp = datetime.now()
+    rrid = rid + uid + str(timestamp) + str(math.floor(random.random() * 1000))
+    result1 = ReviewResource.create_review_by_key(rrid, rating, content)
+    result2 = ReviewResource.create_write_review_by_key(rrid, uid, rid) 
+
+    if result1 and result2:
+        rsp = Response(json.dumps(result1), status=200,
+                       content_type="application.json")
+    else:
+        rsp = Response("NOT FOUND", status=404, content_type="text/plain")
+
+    return rsp  
+
+
 @app.route("/api/reviews/create/<rid>/<rating>/<content>", methods=["POST"])
 def create_reviews_by_rid(rid, rating, content):
 
@@ -198,10 +216,10 @@ def update_reviews_by_rid(rid, rating, content):
     return rsp
 
 
-@app.route("/api/reviews/delete/<rid>", methods=["POST"])
-def delete_reviews_by_rid(rid):
+@app.route("/api/reviews/delete/<rrid>", methods=["POST"])
+def delete_reviews_by_rid(rrid):
 
-    result = ReviewResource.delete_review_by_key(rid)
+    result = ReviewResource.delete_review_by_key(rrid)
 
     if result:
         rsp = Response(json.dumps(result), status=200,

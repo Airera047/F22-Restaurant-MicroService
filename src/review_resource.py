@@ -2,6 +2,7 @@ from unittest import result
 import pymysql
 import os
 
+
 class ReviewResource:
 
     def __int__(self):
@@ -41,7 +42,7 @@ class ReviewResource:
         conn = ReviewResource._get_connection()
         cur = conn.cursor()
         res = cur.execute(sql, args=key)
-        result = cur.fetchone()
+        result = cur.fetchall()
 
         return result
 
@@ -52,22 +53,22 @@ class ReviewResource:
         conn = ReviewResource._get_connection()
         cur = conn.cursor()
         res = cur.execute(sql, args=key)
-        result = cur.fetchone()
+        result = cur.fetchall()
 
         return result
 
     @staticmethod
     def create_review_by_key(rrid, rating, content):
-        
+
         conn = ReviewResource._get_connection()
         cur = conn.cursor()
 
         sql = "INSERT INTO f22_databases.reviews VALUES (%s, %s, %s)"
-        res = cur.execute(sql, args = (rrid, rating, content))
+        res = cur.execute(sql, args=(rrid, rating, content))
         if res > 0:
             return "success"
         else:
-            return "fail"    
+            return "fail"
 
     @staticmethod
     def update_review_by_key(rrid, rating, content):
@@ -79,66 +80,66 @@ class ReviewResource:
         result = cur.fetchall()
         if len(result) <= 0:
             return "review doesn't exist"
-        
+
         sql = "UPDATE f22_databases.reviews SET rrid=%s, rating=%s, content=%s"
-        val = (rrid, rating, content) #(name, address, email, phone, category, rid)
+        # (name, address, email, phone, category, rid)
+        val = (rrid, rating, content)
         cur.execute(sql, val)
 
         if cur.rowcount > 0:
-                return "success"
+            return "success"
         else:
             return "fail"
-    
+
     @staticmethod
-    def delete_review_by_key(rid):
+    def delete_review_by_key(rrid):
         conn = ReviewResource._get_connection()
         cur = conn.cursor()
-    
+
         sql = "SELECT rrid FROM f22_databases.reviews where rrid=%s"
-        res = cur.execute(sql, args=(rid))
+        res = cur.execute(sql, args=(rrid))
         result = cur.fetchall()
         if len(result) <= 0:
             return "review doesn't exist"
-        
+
         sql = "DELETE FROM f22_databases.reviews WHERE rrid = %s"
-        val = (rid)
+        val = (rrid)
         cur.execute(sql, val)
-        
+
         if cur.rowcount > 0:
-                return "success"
+            return "success"
         else:
             return "fail"
 
     @staticmethod
     def create_write_review_by_key(rrid, uid, rid):
-        
+
         conn = ReviewResource._get_connection()
         cur = conn.cursor()
 
         sql = "INSERT INTO f22_databases.write_reviews VALUES (%s, %s, %s)"
-        res = cur.execute(sql, args = (rrid, uid, rid))
+        res = cur.execute(sql, args=(rrid, uid, rid))
         if res > 0:
             return "success"
         else:
-            return "fail"    
+            return "fail"
 
     @staticmethod
     def delete_write_review_by_key(rid):
         conn = ReviewResource._get_connection()
         cur = conn.cursor()
-    
+
         sql = "SELECT rrid FROM f22_databases.write_reviews where rrid=%s"
         res = cur.execute(sql, args=(rid))
         result = cur.fetchall()
         if len(result) <= 0:
             return "review doesn't exist"
-        
+
         sql = "DELETE FROM f22_databases.write_reviews WHERE rrid = %s"
         val = (rid)
         cur.execute(sql, val)
-        
+
         if cur.rowcount > 0:
-                return "success"
+            return "success"
         else:
             return "fail"
-    
