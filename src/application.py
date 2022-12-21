@@ -77,6 +77,7 @@ def get_restaurants_by_query():
     query = request.args.get('query')
     offset = int(request.args.get('offset'))
     limit = int(request.args.get('limit'))
+    print(query)
     if not offset:
         offset = 0
     if not limit:
