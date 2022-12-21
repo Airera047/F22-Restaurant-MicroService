@@ -185,7 +185,7 @@ def get_review_by_restaurant_id(rid):
 
 @app.route("/api/reviews/createall/<rid>/<uid>/<rating>/<content>", methods=["POST"])
 def create_review(rid, uid, rating, content):
-    timestamp = datetime.now()
+    timestamp = datetime.now().timestamp()
     rrid = rid + uid + str(timestamp) + str(math.floor(random.random() * 1000))
     result1 = ReviewResource.create_review_by_key(rrid, rating, content)
     result2 = ReviewResource.create_write_review_by_key(rrid, uid, rid)
