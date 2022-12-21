@@ -48,7 +48,7 @@ class ReviewResource:
 
     @staticmethod
     def get_review_by_restaurant_id(key):
-        sql = "SELECT * FROM f22_databases.restaurants T, f22_databases.reviews R, f22_databases.write_reviews W where W.rrid=R.rrid and and T.rid=W.rid and W.rid=%s"
+        sql = "SELECT * FROM f22_databases.restaurants T, f22_databases.reviews R, f22_databases.write_reviews W where W.rrid=R.rrid and T.rid=W.rid and W.rid=%s"
         conn = ReviewResource._get_connection()
         cur = conn.cursor()
         res = cur.execute(sql, args=key)
