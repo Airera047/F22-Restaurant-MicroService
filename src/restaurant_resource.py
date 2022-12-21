@@ -68,7 +68,7 @@ class RestaurantResource:
         else:
             ret = []
         output = {
-            "count": len(result),
+            "count": len(ret),
             "offset": offset,
             "limit": limit,
             "restaurants": ret
@@ -104,7 +104,7 @@ class RestaurantResource:
             ret = []
 
         output = {
-            "count": len(result),
+            "count": len(ret),
             "offset": offset,
             "limit": limit,
             "restaurants": ret
