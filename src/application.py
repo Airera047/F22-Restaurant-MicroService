@@ -75,17 +75,17 @@ def get_all_restaurants(offset, limit):
 def get_restaurants_by_query():
 
     query = request.args.get('query')
-    offset = request.args.get('offset')
-    limit = request.args.get('limit')
+    offset = int(request.args.get('offset'))
+    limit = int(request.args.get('limit'))
     if not offset:
         offset = 0
     if not limit:
         limit = 10
     if not query:
-        result = result = RestaurantResource.get_all_restaurants(offset, limit)
+        result = RestaurantResource.get_all_restaurants(offset, limit)
     else:
         result = RestaurantResource.get_restaurant_by_query(
-            query, int(offset), int(limit))
+            query, offset, limit)
 
     if result:
         rsp = Response(json.dumps(result), status=200,
