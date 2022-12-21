@@ -64,7 +64,7 @@ class RestaurantResource:
         end = start+limit
 
         if len(result) >= start:
-            ret = result[start:max(end, len(result))]
+            ret = result[start:min(end, len(result))]
         else:
             ret = []
         output = {
@@ -99,7 +99,7 @@ class RestaurantResource:
         end = start+limit
 
         if len(result) >= start:
-            ret = result[start:max(end, len(result))]
+            ret = result[start:min(end, len(result))]
         else:
             ret = []
 
