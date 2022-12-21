@@ -43,8 +43,11 @@ class ReviewResource:
         cur = conn.cursor()
         res = cur.execute(sql, args=key)
         result = cur.fetchall()
-
-        return result
+        output = {
+            "count": len(result),
+            "reviews": result
+        }
+        return output
 
     @staticmethod
     def get_review_by_restaurant_id(key):
@@ -53,8 +56,11 @@ class ReviewResource:
         cur = conn.cursor()
         res = cur.execute(sql, args=key)
         result = cur.fetchall()
-
-        return result
+        output = {
+            "count": len(result),
+            "reviews": result
+        }
+        return output
 
     @staticmethod
     def create_review_by_key(rrid, rating, content):
